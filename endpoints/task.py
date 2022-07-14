@@ -33,11 +33,11 @@ def create_task():
         userId = client_Id
         taskTitle = request_payload.get('taskTitle')
         taskDesc = request_payload.get('taskDesc')
-        startDate = request_payload.get('startDate')
+        startDate = request_payload.get('startDate').replace("/", "-")
         startTime = request_payload.get('startTime')
-        endDate = request_payload.get('endDate')
+        endDate = request_payload.get('endDate').replace("/", "-")
         endTime = request_payload.get('endTime')
-        taskPriority = request_payload.get('taskPriority')
+        taskPriority = request_payload.get('taskPriority').capitalize()
         taskStatus = 'Pending'
 
         result = run_query(query, (userId, taskTitle, taskDesc, startDate, startTime, endDate, endTime,taskPriority, taskStatus))
@@ -62,6 +62,7 @@ def fetch_all_tasks():
         query = 'SELECT * FROM tasks where clientId=?'
         
         result = run_query(query, (client_Id,))
+        print(result)
 
         return jsonify(result)
 
