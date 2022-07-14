@@ -35,17 +35,19 @@ def get_client():
 @app.post('/api/client')
 def create_client():
     request_payload = request.get_json()
-    query = 'INSERT INTO client (email, username, password, first_name, last_name) VALUES (?,?,?,?,?)'
+    query = 'INSERT INTO client (first_name, last_name, email, username, password) VALUES (?,?,?,?,?)'
 
+    first_name = request_payload.get('first_name')
+    last_name = request_payload.get('last_name')
     email = request_payload.get('email')
     username = request_payload.get('username')
     salt = bcrypt.gensalt()
     password = bcrypt.hashpw(request_payload.get('password').encode(), salt)
-    first_name = request_payload.get('first_name')
-    last_name = request_payload.get('last_name')
-    
-    result = run_query(query, (email, username, password, first_name, last_name))
 
+    
+    
+    result = run_query(query, ( first_name, last_name, email, username, password))
+    print(result)
     return jsonify('client created', 200)
 
 def get_client_Id(token):
@@ -71,7 +73,7 @@ def update_client():
 
         print(client_Id)
         
-        query = 'UPDATE client SET first_name=?, last_name=?, picture_url=? WHERE Id = ?'
+        query = 'UPDATE client SET first_name=?, last_name=?, WHERE Id = ?'
         result = run_query(query, (first_name, last_name, client_Id)) 
         
         return jsonify('client updated', 200) 

@@ -5,7 +5,6 @@ from db_helpers import run_query
 from flask_cors import CORS
 import os
 import datetime
-from datetime import datetime, timedelta
 import bcrypt
 import uuid
 from endpoints import client
@@ -23,7 +22,7 @@ def get_client_Id(token):
         return None
 
 # route to create new task
-@app.post('/api/create-task')
+@app.post('/api/create_task')
 def create_task():
     request_payload = request.get_json()
     token = request.headers.get('token')
@@ -41,10 +40,10 @@ def create_task():
         taskPriority = request_payload.get('taskPriority')
         taskStatus = 'Pending'
 
-        result = run_query(run_query, (userId, taskTitle, taskDesc, startDate, startTime, endDate, endTime,taskPriority, taskStatus))
+        result = run_query(query, (userId, taskTitle, taskDesc, startDate, startTime, endDate, endTime,taskPriority, taskStatus))
         
-        taskId = run_query(query, (client_Id, taskId))
-        query = 'INSERT INTO taskItem (taskId, item) VALUES (?,?)'
+        print(result)
+        
         
         return jsonify('Task created', 200)
     else:
@@ -64,7 +63,7 @@ def fetch_all_tasks():
         
         result = run_query(query, (client_Id,))
 
-        return jsonify(result[0])
+        return jsonify(result)
 
         # return jsonify({
         #     'client_Id': result[0][0],
@@ -78,7 +77,7 @@ def fetch_all_tasks():
 
 
 # route to fetch a single task
-@app.get('/api/task')
+@app.get('/api/task/<id>')
 def fetch_single_task(id):
     token = request.headers.get('token')
     
@@ -103,7 +102,7 @@ def fetch_single_task(id):
 
 
 # route to delete a single task
-@app.delete('/api/task')
+@app.delete('/api/task/<id>')
 def delete_task(id):
     token = request.headers.get('token')
     
@@ -121,7 +120,7 @@ def delete_task(id):
 
 
 # route to update a single task
-@app.patch('/api/task')
+@app.patch('/api/task/<id>')
 def update_task(id):
     request_payload=request.get_json()
     token = request.headers.get('token')
