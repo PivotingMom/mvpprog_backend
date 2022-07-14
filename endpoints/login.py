@@ -25,16 +25,24 @@ def client_login():
     result =run_query(query, [email])
 
     print(result)
-    
-    if bcrypt.checkpw(password.encode(), result[0][5].encode()):
+    if not result:
+        if (not email or not len(email)):
+            return jsonify({'message': 'Incorrect email'}), 401
+    if not password:
+        return jsonify({'message': 'No password defined'}), 401
+        
+    try:
+        if bcrypt.checkpw(password.encode(), result[0][5].encode()):
 
-        token=str(uuid.uuid4())
-        run_query( 'INSERT INTO client_session (token, client_Id) VALUES (?,?)', [token, result[0][0]])
-        
-        
-        return jsonify({'clientId':result[0][0],'token':token}), 200
-    else:
-        return jsonify(result, 401)
+            token=str(uuid.uuid4())
+            run_query( 'INSERT INTO client_session (token, client_Id) VALUES (?,?)', [token, result[0][0]])
+            
+            
+            return jsonify({'clientId':result[0][0],'token':token}), 200
+        else:
+            return jsonify(result, 401)
+    except Exception as e:
+        return jsonify({'message': 'Incorrect password'}), 401
 
 
 def get_client_Id(token):

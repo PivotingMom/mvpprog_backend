@@ -11,8 +11,6 @@ import uuid
 from endpoints.login import client_login
 
 
-
-
 @app.get('/api/client')
 def get_client():
     token = request.headers.get('token')
@@ -23,6 +21,7 @@ def get_client():
         query = 'SELECT * FROM client where Id=?'
         
         result = run_query(query, (client_Id,))
+        #print(result)
 
         return jsonify({
             'client_Id': result[0][0],

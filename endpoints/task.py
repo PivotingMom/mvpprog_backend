@@ -135,7 +135,7 @@ def update_task(id):
         endDate = request_payload.get('endDate')
         endTime = request_payload.get('endTime')
         taskPriority = request_payload.get('taskPriority')
-        taskStatus = 'Pending'
+        taskStatus = request_payload.get('taskStatus')
 
         print(client_Id)
         
