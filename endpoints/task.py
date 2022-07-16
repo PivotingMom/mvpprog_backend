@@ -66,13 +66,6 @@ def fetch_all_tasks():
 
         return jsonify(result)
 
-        # return jsonify({
-        #     'client_Id': result[0][0],
-        #     'email': result[0][1],
-        #     'username': result[0][2],
-        #     'password': result[0][3],
-        #     'name': result[0][4],
-        # })
     else:
         return jsonify('failed', 401)
 
@@ -110,7 +103,7 @@ def delete_task():
     client_Id = get_client_Id(token)
     if client_Id:
     
-        query = 'DELETE from tasks where Id=?'
+        query = 'DELETE from tasks where id=?'
         
         result = run_query(query, (id,))
 
@@ -139,7 +132,7 @@ def update_task():
 
         print(client_Id)
         
-        query = 'UPDATE tasks SET taskTitle=?, taskDesc=?, startDate=?, startTime=?, endDate=?, endTime=?, taskPriority=?, taskStatus=? WHERE Id = ?'
+        query = 'UPDATE tasks SET taskTitle=?, taskDesc=?, startDate=?, startTime=?, endDate=?, endTime=?, taskPriority=?, taskStatus=? WHERE id = ?'
         result = run_query(query, (taskTitle, taskDesc, startDate, startTime, endDate, endTime, taskPriority, taskStatus, id)) 
         
         return jsonify('client updated', 200) 
