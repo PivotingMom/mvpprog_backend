@@ -78,7 +78,8 @@ def fetch_all_tasks():
 
 
 # route to fetch a single task
-@app.get('/api/task/<id>')
+@app.get('/api/task')
+
 def fetch_single_task(id):
     token = request.headers.get('token')
     
@@ -103,10 +104,9 @@ def fetch_single_task(id):
 
 
 # route to delete a single task
-@app.delete('/api/task/<id>')
-def delete_task(id):
+@app.delete('/api/task')
+def delete_task():
     token = request.headers.get('token')
-    
     client_Id = get_client_Id(token)
     if client_Id:
     
@@ -121,21 +121,21 @@ def delete_task(id):
 
 
 # route to update a single task
-@app.patch('/api/task/<id>')
-def update_task(id):
-    request_payload=request.get_json()
+@app.patch('/api/task')
+def update_task():
+    data=request.get_json()
     token = request.headers.get('token')
     
     client_Id = get_client_Id(token)
     if client_Id:
-        taskTitle = request_payload.get('taskTitle')
-        taskDesc = request_payload.get('taskDesc')
-        startDate = request_payload.get('startDate')
-        startTime = request_payload.get('startTime')
-        endDate = request_payload.get('endDate')
-        endTime = request_payload.get('endTime')
-        taskPriority = request_payload.get('taskPriority')
-        taskStatus = request_payload.get('taskStatus')
+        taskTitle = data.get('taskTitle')
+        taskDesc = data.get('taskDesc')
+        startDate = data.get('startDate')
+        startTime = data.get('startTime')
+        endDate = data.get('endDate')
+        endTime = data.get('endTime')
+        taskPriority = data.get('taskPriority')
+        taskStatus = data.get('taskStatus')
 
         print(client_Id)
         

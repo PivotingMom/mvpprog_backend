@@ -18,7 +18,7 @@ def get_client():
     client_Id = get_client_Id(token)
     if client_Id:
     
-        query = 'SELECT * FROM client where Id=?'
+        query = 'SELECT * FROM client where id=?'
         
         result = run_query(query, (client_Id,))
         #print(result)
@@ -27,7 +27,6 @@ def get_client():
             'client_Id': result[0][0],
             'email': result[0][1],
             'username': result[0][2],
-            'password': result[0][3],
             'name': result[0][4],
         })
 
@@ -53,7 +52,8 @@ def get_client_Id(token):
     max_token_age = datetime.datetime.utcnow() - datetime.timedelta(minutes=60)
     print(max_token_age)
     
-    query = 'SELECT client_Id from client_session WHERE token = ? AND created_at > ?' 
+    query = 'SELECT client_Id from client_session WHERE token = ? AND created_at > ?'
+
     result = run_query(query, (token, max_token_age))
     if result:
         return result[0][0]
