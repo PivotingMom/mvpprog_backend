@@ -45,9 +45,9 @@ def create_task():
         print(result)
         
         
-        return jsonify('Task created', 200)
+        return jsonify('Task created'), 200
     else:
-        return jsonify('failed', 401)
+        return jsonify('failed'), 401
 
 
 
@@ -59,7 +59,7 @@ def fetch_all_tasks():
     client_Id = get_client_Id(token)
     if client_Id:
     
-        query = 'SELECT * FROM tasks where clientId=?'
+        query = 'SELECT * FROM tasks where client_id=?'
         
         result = run_query(query, (client_Id,))
         print(result)
@@ -67,11 +67,11 @@ def fetch_all_tasks():
         return jsonify(result)
 
     else:
-        return jsonify('failed', 401)
+        return jsonify('failed'), 401
 
 
 # route to fetch a single task
-@app.get('/api/task')
+@app.get('/api/task/<id>')
 
 def fetch_single_task(id):
     token = request.headers.get('token')
@@ -79,7 +79,7 @@ def fetch_single_task(id):
     client_Id = get_client_Id(token)
     if client_Id:
     
-        query = 'SELECT * FROM tasks where Id=?'
+        query = 'SELECT * FROM tasks where id=?'
         
         result = run_query(query, (id,))
 
@@ -93,12 +93,12 @@ def fetch_single_task(id):
         #     'name': result[0][4],
         # })
     else:
-        return jsonify('Unauthorized', 401)
+        return jsonify('Unauthorized'), 401
 
 
 # route to delete a single task
-@app.delete('/api/task')
-def delete_task():
+@app.delete('/api/task/<id>')
+def delete_task(id):
     token = request.headers.get('token')
     client_Id = get_client_Id(token)
     if client_Id:
@@ -107,15 +107,15 @@ def delete_task():
         
         result = run_query(query, (id,))
 
-        return jsonify('Task deleted', 200) 
+        return jsonify('Task deleted'), 200 
 
     else:
-        return jsonify('Unauthorized', 401)
+        return jsonify('Unauthorized'), 401
 
 
 # route to update a single task
-@app.patch('/api/task')
-def update_task():
+@app.patch('/api/task/<id>')
+def update_task(id):
     data=request.get_json()
     token = request.headers.get('token')
     
@@ -133,9 +133,10 @@ def update_task():
         print(client_Id)
         
         query = 'UPDATE tasks SET taskTitle=?, taskDesc=?, startDate=?, startTime=?, endDate=?, endTime=?, taskPriority=?, taskStatus=? WHERE id = ?'
+        
         result = run_query(query, (taskTitle, taskDesc, startDate, startTime, endDate, endTime, taskPriority, taskStatus, id)) 
         
-        return jsonify('client updated', 200) 
+        return jsonify('client updated'), 200
     
     else: 
-        return jsonify('Unauthorized', 401)
+        return jsonify('Unauthorized'), 401

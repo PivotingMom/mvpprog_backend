@@ -44,9 +44,10 @@ def fetch_all_entry():
   token = request.headers.get('token')
     
   client_Id = get_client_Id(token)
+  print(client_Id)
   if client_Id:
     
-        query = 'SELECT * FROM journal where clientId=?'
+        query = 'SELECT * FROM journal where client_id=?'
 
 
         result = run_query(query, (client_Id,))
@@ -58,9 +59,15 @@ def fetch_all_entry():
         return jsonify('failed'), 401
 
 
-@app.get('/api/journal')
+# Using named parameters in the decorator
+# Vs. query parameters and JSON
+# Since this route is only getting one parameter
+@app.get('/api/journal/<id>')
 def fetch_single_entry(id):
     token = request.headers.get('token')
+    #entry_id = id or request.args.get('id', default=1, type = int)
+    
+    #print(entry_id)
     
     client_Id = get_client_Id(token)
     if client_Id:
@@ -74,9 +81,10 @@ def fetch_single_entry(id):
 
     else:
         return jsonify('Unauthorized', 401)
-      
-@app.delete('/api/journal')
-def delete_entry():
+    
+    
+@app.delete('/api/journal/<id>')
+def delete_entry(id):
     token = request.headers.get('token')
     client_Id = get_client_Id(token)
     if client_Id:
@@ -91,8 +99,8 @@ def delete_entry():
         return jsonify('Unsuccessful', 400)
 
 
-@app.patch('/api/journal')
-def update_entry():
+@app.patch('/api/journal/<id>')
+def update_entry(id):
     data=request.get_json()
     token = request.headers.get('token')
     
@@ -101,11 +109,11 @@ def update_entry():
     if client_Id:
         Title = data.get('Title')
         Content = data.get('content')
-        Date = data.get('Date')
+        #Date = data.get('Date')
         #Date = date.strftime('%Y-%m-%d %H:%M:%S')
 
-        query = 'UPDATE journal SET title=?, content=?, date=?,  WHERE id = ?'
-        result = run_query(query, (Title, Content, Date, id)) 
+        query = 'UPDATE journal SET title=?, content=?  WHERE id = ?'
+        result = run_query(query, (Title, Content, id)) 
         
         return jsonify('entry updated', 200) 
     
