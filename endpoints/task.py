@@ -57,6 +57,7 @@ def fetch_all_tasks():
     token = request.headers.get('token')
     
     client_Id = get_client_Id(token)
+    print(client_Id)
     if client_Id:
     
         query = 'SELECT * FROM tasks where client_id=?'
@@ -72,7 +73,6 @@ def fetch_all_tasks():
 
 # route to fetch a single task
 @app.get('/api/task/<id>')
-
 def fetch_single_task(id):
     token = request.headers.get('token')
     

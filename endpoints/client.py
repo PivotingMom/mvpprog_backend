@@ -50,11 +50,14 @@ def create_client():
 
 def get_client_Id(token):
     max_token_age = datetime.datetime.utcnow() - datetime.timedelta(minutes=60)
-    print(max_token_age)
+    #print(max_token_age)
+    print(token)
     
-    query = 'SELECT client_id from client_session WHERE token = ? AND created_at > ?'
+    query = 'SELECT client_id from client_session WHERE token = ?'
 
-    result = run_query(query, (token, max_token_age))
+    result = run_query(query, (token,))
+    print(result)
+
     if result:
         return result[0][0]
     else: 
@@ -84,13 +87,16 @@ def update_client():
 @app.delete('/api/client')
 def delete_client():
     token = request.headers.get('token')
+    print('Token', token)
     client_Id = get_client_Id(token)
+    print(client_Id)
+
     if client_Id:
-        """ query = 'DELETE from client_session WHERE client_id = ?'
-        run_query(query, (client_Id,)) """
-        
-        query = 'DELETE from client WHERE id = ?'
+        query = 'DELETE from client_session WHERE client_id = ?'
         run_query(query, (client_Id,))
+        
+        """ query = 'DELETE from client WHERE id = ?'
+        run_query(query, (client_Id,)) """
         
         return jsonify('client deleted', 200) 
     else: 
