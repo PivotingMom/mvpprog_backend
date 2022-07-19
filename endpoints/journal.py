@@ -58,10 +58,12 @@ def fetch_all_entry():
   else:
         return jsonify('failed'), 401
 
+# sorry I know we discussed this, but  i just couldnt think through that logic in these case
+# """ # Using named parameters in the decorator
+# # Vs. query parameters and JSON
+# # Since this route is only getting one parameter
+# https://flask.palletsprojects.com/en/2.1.x/quickstart/#rendering-templates """
 
-# Using named parameters in the decorator
-# Vs. query parameters and JSON
-# Since this route is only getting one parameter
 @app.get('/api/journal/<id>')
 def fetch_single_entry(id):
     token = request.headers.get('token')

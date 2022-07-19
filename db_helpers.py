@@ -53,8 +53,8 @@ def run_query(statement, args=None):
         print("Intergrity error")
         if ("CONSTRAINT `user_CHECK_username" in e.msg):
             print("Error, all usernames must start with the letter J")
-        elif ("CONSTRAINT `user_CHECK_age" in e.msg):
-            print("Error, user is outside of acceptable age range")
+        elif ("CONSTRAINT `user_CHECK_title" in e.msg):
+            print("Error, text outside of the acceptable types")
         elif ("Duplicate entry" in e.msg):
             print("user already exist")
         else:

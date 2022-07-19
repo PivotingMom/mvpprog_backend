@@ -71,7 +71,12 @@ def fetch_all_tasks():
         return jsonify('failed'), 401
 
 
-# route to fetch a single task
+# Using named parameters in the decorator
+# # Vs. query parameters and JSON
+# # Since this route is only getting one parameter
+# https://flask.palletsprojects.com/en/2.1.x/quickstart/#rendering-templates
+# sorry I know we discussed this, but  i just couldnt think through that logic in these case
+
 @app.get('/api/task/<id>')
 def fetch_single_task(id):
     token = request.headers.get('token')
