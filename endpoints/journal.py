@@ -11,13 +11,13 @@ from endpoints import client
 from endpoints.client import get_client_Id
 
 
-@app.post('/api/create-journal')
+@app.post('/api/create-entry')
 def create_journal():
     request_payload = request.get_json()
     print(request_payload)
-   # token = request.headers.get('token')
-  
-   # client_Id = get_client_Id(token)
+    # token = request.headers.get('token')
+    
+    # client_Id = get_client_Id(token)
     client_Id = request_payload.get('client_id')
     
     print(client_Id)
@@ -34,18 +34,18 @@ def create_journal():
         result = run_query(query, (client_Id,Title, Content, Date))
         
         print(result)
-      
+        
         return jsonify('Journal note created', 200)
     else:
         return jsonify('failed'), 401
 
-@app.get('/api/all-journal')
+@app.get('/api/all-entry')
 def fetch_all_entry():
-  token = request.headers.get('token')
+    token = request.headers.get('token')
     
-  client_Id = get_client_Id(token)
-  print(client_Id)
-  if client_Id:
+    client_Id = get_client_Id(token)
+    print(client_Id)
+    if client_Id:
     
         query = 'SELECT * FROM journal where client_id=?'
 
@@ -54,8 +54,8 @@ def fetch_all_entry():
         print(result)
         
         return jsonify(result)
-      
-  else:
+
+    else:
         return jsonify('failed'), 401
 
 # sorry I know we discussed this, but  i just couldnt think through that logic in these case
@@ -64,7 +64,7 @@ def fetch_all_entry():
 # # Since this route is only getting one parameter
 # https://flask.palletsprojects.com/en/2.1.x/quickstart/#rendering-templates """
 
-@app.get('/api/journal/<id>')
+@app.get('/api/entry/<id>')
 def fetch_single_entry(id):
     token = request.headers.get('token')
     #entry_id = id or request.args.get('id', default=1, type = int)
@@ -85,7 +85,7 @@ def fetch_single_entry(id):
         return jsonify('Unauthorized', 401)
     
     
-@app.delete('/api/journal/<id>')
+@app.delete('/api/entry/<id>')
 def delete_entry(id):
     token = request.headers.get('token')
     client_Id = get_client_Id(token)
@@ -101,7 +101,7 @@ def delete_entry(id):
         return jsonify('Unsuccessful', 400)
 
 
-@app.patch('/api/journal/<id>')
+@app.patch('/api/entry/<id>')
 def update_entry(id):
     data=request.get_json()
     token = request.headers.get('token')

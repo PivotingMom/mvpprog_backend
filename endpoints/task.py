@@ -22,7 +22,7 @@ def get_client_Id(token):
         return None
 
 # route to create new task
-@app.post('/api/create_task')
+@app.post('/api/create-task')
 def create_task():
     request_payload = request.get_json()
     token = request.headers.get('token')
